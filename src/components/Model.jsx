@@ -1,12 +1,13 @@
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {yellowImg} from '../utils'
 import {models, sizes} from '../constants'
 import * as THREE from 'three'
 import ModelView from './ModelView'
 import { Canvas } from '@react-three/fiber'
 import { View } from '@react-three/drei'
+import {animateWithGsapTimeline} from '../utils/animation'
 
 function Model() {
     useGSAP(()=>{
@@ -22,7 +23,22 @@ function Model() {
         ease:"power1.inOut"
       })
     },[])
+       const tl=gsap.timeline()
 
+       useEffect(()=>{
+        if(size==='large'){
+          animateWithGsapTimeline(tl, small ,smallRotaion,'#view1','#view2',{ // we biuld this func in utils
+            transform:'translateX(-100%)',
+            duration :2
+          })
+        }
+        else{
+          animateWithGsapTimeline(tl,large,largeRotaion,'#view2','#view1',{ // we biuld this func in utils
+            transform:'translateX(0)',
+            duration :2
+          })
+        }
+       })
     const [size,setSize]=useState('small')
     const [model,setModel]=useState({
         title:'iPhone 15 Pro in natural Titanium',
